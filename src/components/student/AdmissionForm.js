@@ -5,12 +5,8 @@ import ContactInfoSection from "./ContactInfoSection";
 import FeeInfoSection from "./FeeInfoSection";
 import DocumentUploadSection from "./DocumentUploadSection";
 import DeclarationSection from "./DeclarationSection";
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://ggu-btech-form-b.vercel.app/";
 
-
-
-
-const AdmissionForm = ({ onSubmissionStart, onSubmissionSuccess, onSubmissionError }) => {
+const AdmissionForm = ({ apiBaseUrl, onSubmissionStart, onSubmissionSuccess, onSubmissionError }) => {
   const [form, setForm] = useState({
     name: "",
     fatherName: "",
@@ -53,65 +49,54 @@ const AdmissionForm = ({ onSubmissionStart, onSubmissionSuccess, onSubmissionErr
     }));
   };
 
- const handleSubmit = async (e) => {
-  e.preventDefault();
-  console.log('🚀 Starting form submission...');
-  
-  onSubmissionStart();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("🚀 Starting form submission...");
 
-  const formData = new FormData();
-  Object.entries(form).forEach(([key, value]) => {
-    if (value !== null && value !== '') {
-      formData.append(key, value);
-    }
-  });
+    onSubmissionStart();
 
-  try {
-    const response = await fetch(`${API_BASE_URL}/api/admission`, {
-      method: 'POST',
-      body: formData,
+    const formData = new FormData();
+    Object.entries(form).forEach(([key, value]) => {
+      if (value !== null && value !== "") {
+        formData.append(key, value);
+      }
     });
 
-    console.log('📊 Response status:', response.status);
-    console.log('📋 Content-Type:', response.headers.get('content-type'));
-    
-    // Check content type before parsing
-    const contentType = response.headers.get('content-type');
-    
-    if (response.ok) {
-      if (contentType && contentType.includes('application/json')) {
-        const result = await response.json();
-        console.log('✅ Success:', result);
+    try {
+      const response = await fetch(`${apiBaseUrl}/api/admission`, {
+        method: "POST",
+        body: formData,
+      });
+
+      console.log("📊 Response status:", response.status);
+      const contentType = response.headers.get("content-type");
+
+      if (response.ok) {
+        if (contentType && contentType.includes("application/json")) {
+          const result = await response.json();
+          console.log("✅ Success:", result);
+        } else {
+          console.log("✅ Success (non-JSON response)");
+        }
         onSubmissionSuccess();
       } else {
-        console.log('✅ Success (non-JSON response)');
-        onSubmissionSuccess();
+        let errorMessage = `HTTP ${response.status}`;
+        if (contentType && contentType.includes("application/json")) {
+          const errorData = await response.json();
+          errorMessage = errorData.error || errorData.message || errorMessage;
+        } else {
+          const errorText = await response.text();
+          console.error("❌ HTML Error Response:", errorText.substring(0, 200));
+          errorMessage = `Server returned HTML error page (${response.status})`;
+        }
+        throw new Error(errorMessage);
       }
-    } else {
-      // Handle error responses
-      let errorMessage = `HTTP ${response.status}`;
-      
-      if (contentType && contentType.includes('application/json')) {
-        const errorData = await response.json();
-        errorMessage = errorData.error || errorData.message || errorMessage;
-      } else {
-        const errorText = await response.text();
-        console.error('❌ HTML Error Response:', errorText.substring(0, 200));
-        errorMessage = `Server returned HTML error page (${response.status})`;
-      }
-      
-      throw new Error(errorMessage);
+    } catch (error) {
+      console.error("💥 Request failed:", error);
+      alert(`Submission failed: ${error.message}`);
+      onSubmissionError();
     }
-    
-  } catch (error) {
-    console.error('💥 Request failed:', error);
-    alert(`Submission failed: ${error.message}`);
-    onSubmissionError();
-  }
-};
-
-
-
+  };
 
   return (
     <form onSubmit={handleSubmit} style={{ maxWidth: 500, margin: "auto" }}>
@@ -121,7 +106,7 @@ const AdmissionForm = ({ onSubmissionStart, onSubmissionSuccess, onSubmissionErr
       <FeeInfoSection form={form} onChange={handleChange} />
       <DocumentUploadSection form={form} onChange={handleChange} />
       <DeclarationSection form={form} onChange={handleChange} />
-      
+
       <button type="submit" style={{ marginTop: 20, width: "100%" }}>
         Submit
       </button>
