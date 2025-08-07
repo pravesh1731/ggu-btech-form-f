@@ -14,9 +14,10 @@ const Dashboard = ({ onLogout }) => {
   });
 
   useEffect(() => {
-    fetchApplications();
-    fetchStatistics();
-  }, []);
+  fetchApplications();
+  fetchStatistics();
+}, [fetchApplications, fetchStatistics]); // ✅ Correct
+
 
   const fetchApplications = async () => {
     try {
