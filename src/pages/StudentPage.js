@@ -3,10 +3,6 @@ import AdmissionForm from '../components/student/AdmissionForm';
 import SuccessPage from '../components/student/SuccessPage';
 import LoadingSpinner from '../components/common/LoadingSpinner';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://ggu-btech-form-b.vercel.app/";
-
-
-
 
 const StudentPage = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -21,13 +17,13 @@ const StudentPage = () => {
   const handleSubmissionStart = () => {
     console.log('⏳ handleSubmissionStart called');
     setIsLoading(true);
-    setIsSubmitted(false); // Reset submitted state
+    setIsSubmitted(false);
   };
 
   const handleSubmissionError = () => {
     console.log('❌ handleSubmissionError called');
     setIsLoading(false);
-    setIsSubmitted(false); // Keep on form page
+    setIsSubmitted(false);
   };
 
   const resetForm = () => {
@@ -35,9 +31,6 @@ const StudentPage = () => {
     setIsSubmitted(false);
     setIsLoading(false);
   };
-
-  // Debug logging
-  console.log('StudentPage render:', { isLoading, isSubmitted });
 
   if (isLoading) {
     return <LoadingSpinner message="Submitting your application..." />;
@@ -50,6 +43,7 @@ const StudentPage = () => {
   return (
     <div className="student-page">
       <AdmissionForm
+        apiBaseUrl={API_BASE_URL} // ✅ Pass API_BASE_URL to AdmissionForm
         onSubmissionStart={handleSubmissionStart}
         onSubmissionSuccess={handleSubmissionSuccess}
         onSubmissionError={handleSubmissionError}
