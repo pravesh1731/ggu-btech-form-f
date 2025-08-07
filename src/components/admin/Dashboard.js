@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import ApplicationsList from './ApplicationsList';
 import Statistics from './Statistics';
 
@@ -13,7 +13,7 @@ const Dashboard = ({ onLogout }) => {
     'Content-Type': 'application/json'
   });
 
-   const fetchApplications = async () => {
+  const fetchApplications = useCallback(async () => {
     try {
       const response = await fetch('http://localhost:5002/api/admin/applications', {
         headers: getAuthHeaders()
@@ -27,9 +27,9 @@ const Dashboard = ({ onLogout }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const fetchStatistics = async () => {
+  const fetchStatistics = useCallback(async () => {
     try {
       const response = await fetch('http://localhost:5002/api/admin/statistics', {
         headers: getAuthHeaders()
@@ -41,14 +41,12 @@ const Dashboard = ({ onLogout }) => {
     } catch (error) {
       console.error('Error fetching statistics:', error);
     }
-  };
-  
+  }, []);
+
   useEffect(() => {
     fetchApplications();
     fetchStatistics();
   }, [fetchApplications, fetchStatistics]);
-
- 
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#f5f5f5' }}>
