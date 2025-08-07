@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from '../components/admin/LoginPage';
 import Dashboard from '../components/admin/Dashboard';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ;
 
 const AdminPage = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -13,7 +14,7 @@ const AdminPage = () => {
     const token = localStorage.getItem('adminToken');
     if (token) {
       // Verify token with backend
-      fetch('http://localhost:5002/api/admin/applications', {
+      fetch(`${API_BASE_URL}/api/admin/applications`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }

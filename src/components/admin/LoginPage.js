@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ;
 
 const LoginPage = ({ onLogin }) => {
   const [credentials, setCredentials] = useState({
@@ -28,8 +29,8 @@ const LoginPage = ({ onLogin }) => {
       console.log("Request body being sent:", requestBody);
 
       const apiBaseUrl =
-         "http://localhost:5002";
-      const response = await fetch(`${apiBaseUrl}/api/admin/login`, {
+         `${API_BASE_URL}/api/admin/login`;
+      const response = await fetch(apiBaseUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

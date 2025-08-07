@@ -5,6 +5,7 @@ import ContactInfoSection from "./ContactInfoSection";
 import FeeInfoSection from "./FeeInfoSection";
 import DocumentUploadSection from "./DocumentUploadSection";
 import DeclarationSection from "./DeclarationSection";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ;
 
 
 const AdmissionForm = ({ onSubmissionStart, onSubmissionSuccess, onSubmissionError }) => {
@@ -64,7 +65,7 @@ const AdmissionForm = ({ onSubmissionStart, onSubmissionSuccess, onSubmissionErr
   });
 
   try {
-    const response = await fetch('http://localhost:5002/api/admission', {
+    const response = await fetch(`${API_BASE_URL}/api/admission`, {
       method: 'POST',
       body: formData,
     });

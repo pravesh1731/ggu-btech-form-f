@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import ApplicationsList from './ApplicationsList';
 import Statistics from './Statistics';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ;
 
 const Dashboard = ({ onLogout }) => {
   const [activeTab, setActiveTab] = useState('applications');
@@ -15,7 +16,7 @@ const Dashboard = ({ onLogout }) => {
 
   const fetchApplications = useCallback(async () => {
     try {
-      const response = await fetch('http://localhost:5002/api/admin/applications', {
+      const response = await fetch(`${API_BASE_URL}/api/admin/applications`, {
         headers: getAuthHeaders()
       });
       const data = await response.json();
@@ -31,7 +32,7 @@ const Dashboard = ({ onLogout }) => {
 
   const fetchStatistics = useCallback(async () => {
     try {
-      const response = await fetch('http://localhost:5002/api/admin/statistics', {
+      const response = await fetch(`${API_BASE_URL}/api/admin/statistics`, {
         headers: getAuthHeaders()
       });
       const data = await response.json();

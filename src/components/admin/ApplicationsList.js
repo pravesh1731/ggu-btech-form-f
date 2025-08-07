@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ;
 
 const ApplicationsList = ({ applications }) => {
    // Add debugging at the top of the component
@@ -34,8 +35,8 @@ const downloadExcel = async () => {
     if (!token) {
       throw new Error('No admin token found. Please login again.');
     }
-    
-    const response = await fetch('http://localhost:5002/api/admin/applications/download/excel', {
+
+    const response = await fetch(`${API_BASE_URL}/api/admin/applications/download/excel`, {
       method: 'GET',
       headers: {
         'Authorization': `Bearer ${token}`,
