@@ -27,19 +27,8 @@ const LoginPage = ({ onLogin }) => {
       const requestBody = JSON.stringify(credentials);
       console.log("Request body being sent:", requestBody);
 
-      // Use environment-based API URL for separate deployment
-      const getApiBaseUrl = () => {
-        if (process.env.NODE_ENV === "production") {
-          return (
-            process.env.REACT_APP_API_URL ||
-            "https://your-backend-app.vercel.app"
-          );
-        }
-        return process.env.REACT_APP_API_URL || "http://localhost:5002";
-      };
-
-      const apiBaseUrl = getApiBaseUrl();
-
+      const apiBaseUrl =
+         "http://localhost:5002";
       const response = await fetch(`${apiBaseUrl}/api/admin/login`, {
         method: "POST",
         headers: {
