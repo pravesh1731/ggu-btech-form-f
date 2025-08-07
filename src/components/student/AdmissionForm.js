@@ -5,7 +5,9 @@ import ContactInfoSection from "./ContactInfoSection";
 import FeeInfoSection from "./FeeInfoSection";
 import DocumentUploadSection from "./DocumentUploadSection";
 import DeclarationSection from "./DeclarationSection";
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ;
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://ggu-btech-form-b.vercel.app/";
+
+
 
 
 const AdmissionForm = ({ onSubmissionStart, onSubmissionSuccess, onSubmissionError }) => {

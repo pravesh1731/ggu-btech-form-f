@@ -2,7 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import LoginPage from '../components/admin/LoginPage';
 import Dashboard from '../components/admin/Dashboard';
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ;
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://ggu-btech-form-b.vercel.app/";
+
+
 
 const AdminPage = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);

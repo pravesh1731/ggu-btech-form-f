@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import ApplicationsList from './ApplicationsList';
 import Statistics from './Statistics';
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ;
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://ggu-btech-form-b.vercel.app/";
+
+
 
 const Dashboard = ({ onLogout }) => {
   const [activeTab, setActiveTab] = useState('applications');
