@@ -2,8 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import ApplicationsList from "./ApplicationsList";
 import Statistics from "./Statistics";
 
-const API_BASE_URL =
-  process.env.REACT_APP_API_BASE_URL || "http://localhost:5002";
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "http://localhost:5002";
 
 const Dashboard = ({ onLogout }) => {
   const [activeTab, setActiveTab] = useState("applications");
@@ -51,71 +50,88 @@ const Dashboard = ({ onLogout }) => {
     fetchStatistics();
   }, [fetchApplications, fetchStatistics]);
 
+  const styles = {
+    container: {
+      minHeight: "100vh",
+      backgroundColor: "#f5f5f5",
+    },
+    header: {
+      backgroundColor: "#fff",
+      padding: "15px 5vw",
+      borderBottom: "1px solid #ddd",
+      display: "flex",
+      flexWrap: "wrap",
+      justifyContent: "space-between",
+      alignItems: "center",
+      rowGap: "10px",
+    },
+    title: {
+      margin: 0,
+      color: "#333",
+      fontSize: "1.5rem",
+    },
+    logoutButton: {
+      padding: "8px 16px",
+      backgroundColor: "#dc3545",
+      color: "white",
+      border: "none",
+      borderRadius: "4px",
+      cursor: "pointer",
+      whiteSpace: "nowrap",
+    },
+    navTabs: {
+      backgroundColor: "#fff",
+      padding: "0 5vw",
+      borderBottom: "1px solid #ddd",
+    },
+    tabContainer: {
+      display: "flex",
+      flexWrap: "wrap",
+    },
+    tabButton: (isActive) => ({
+      padding: "12px 20px",
+      border: "none",
+      backgroundColor: isActive ? "#007bff" : "transparent",
+      color: isActive ? "white" : "#333",
+      cursor: "pointer",
+      borderBottom: isActive ? "2px solid #007bff" : "none",
+      fontSize: "1rem",
+      flex: "1 1 auto",
+      minWidth: "150px",
+      textAlign: "center",
+    }),
+    content: {
+      padding: "30px 5vw",
+    },
+    loadingText: {
+      textAlign: "center",
+      fontSize: "1.2rem",
+      padding: "20px",
+    },
+  };
+
   return (
-    <div style={{ minHeight: "100vh", backgroundColor: "#f5f5f5" }}>
+    <div style={styles.container}>
       {/* Header */}
-      <div
-        style={{
-          backgroundColor: "#fff",
-          padding: "15px 30px",
-          borderBottom: "1px solid #ddd",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-        }}
-      >
-        <h1 style={{ margin: 0, color: "#333" }}>GGU Admin Dashboard</h1>
-        <button
-          onClick={onLogout}
-          style={{
-            padding: "8px 16px",
-            backgroundColor: "#dc3545",
-            color: "white",
-            border: "none",
-            borderRadius: "4px",
-            cursor: "pointer",
-          }}
-        >
+      <div style={styles.header}>
+        <h1 style={styles.title}>GGU Admin Dashboard</h1>
+        <button onClick={onLogout} style={styles.logoutButton}>
           Logout
         </button>
       </div>
 
       {/* Navigation Tabs */}
-      <div
-        style={{
-          backgroundColor: "#fff",
-          padding: "0 30px",
-          borderBottom: "1px solid #ddd",
-        }}
-      >
-        <div style={{ display: "flex" }}>
+      <div style={styles.navTabs}>
+        <div style={styles.tabContainer}>
           <button
             onClick={() => setActiveTab("applications")}
-            style={{
-              padding: "15px 25px",
-              border: "none",
-              backgroundColor:
-                activeTab === "applications" ? "#007bff" : "transparent",
-              color: activeTab === "applications" ? "white" : "#333",
-              cursor: "pointer",
-              borderBottom:
-                activeTab === "applications" ? "2px solid #007bff" : "none",
-            }}
+            style={styles.tabButton(activeTab === "applications")}
           >
             Applications ({applications.length})
           </button>
           <button
             onClick={() => setActiveTab("statistics")}
-            style={{
-              padding: "15px 25px",
-              border: "none",
-              backgroundColor:
-                activeTab === "statistics" ? "#007bff" : "transparent",
-              color: activeTab === "statistics" ? "white" : "#333",
-              cursor: "pointer",
-              borderBottom:
-                activeTab === "statistics" ? "2px solid #007bff" : "none",
-            }}
+            style={styles.tabButton(activeTab === "statistics")}
           >
             Statistics
           </button>
@@ -123,9 +139,9 @@ const Dashboard = ({ onLogout }) => {
       </div>
 
       {/* Content */}
-      <div style={{ padding: "30px" }}>
+      <div style={styles.content}>
         {loading ? (
-          <div style={{ textAlign: "center" }}>Loading...</div>
+          <div style={styles.loadingText}>Loading...</div>
         ) : (
           <>
             {activeTab === "applications" && (
