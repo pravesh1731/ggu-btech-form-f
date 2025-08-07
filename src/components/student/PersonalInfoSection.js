@@ -179,7 +179,7 @@ const PersonalInfoSection = ({ form, onChange }) => {
         type="select"
         value={form.branchName}
         onChange={onChange}
-        options={["CSE", "IT", "ECE", "EE", "Mechanical", "Civil", "Chemical","IPE"]}
+        options={["CSE", "IT", "ECE", "EE", "Mechanical", "Civil", "Chemical","IPE", "AI & DS","Animation & VFX"]}
         required
       />
           <FormField
