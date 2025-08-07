@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://ggu-btech-form-b.vercel.app/";
 
+const API_BASE_URL =
+  process.env.REACT_APP_API_BASE_URL || "http://localhost:5002";
 
 const LoginPage = ({ onLogin }) => {
   const [credentials, setCredentials] = useState({
@@ -29,8 +30,7 @@ const LoginPage = ({ onLogin }) => {
       const requestBody = JSON.stringify(credentials);
       console.log("Request body being sent:", requestBody);
 
-      const apiBaseUrl =
-         `${API_BASE_URL}/api/admin/login`;
+      const apiBaseUrl = `${API_BASE_URL}/api/admin/login`;
       const response = await fetch(apiBaseUrl, {
         method: "POST",
         headers: {

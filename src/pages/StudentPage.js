@@ -1,33 +1,36 @@
-import React, { useState } from 'react';
-import AdmissionForm from '../components/student/AdmissionForm';
-import SuccessPage from '../components/student/SuccessPage';
-import LoadingSpinner from '../components/common/LoadingSpinner';
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://ggu-btech-form-b.vercel.app/";
+import React, { useState } from "react";
+import AdmissionForm from "../components/student/AdmissionForm";
+import SuccessPage from "../components/student/SuccessPage";
+import LoadingSpinner from "../components/common/LoadingSpinner";
+
+// API Base URL configuration for Create React App
+const API_BASE_URL =
+  process.env.REACT_APP_API_BASE_URL || "https://ggu-btech-form-b.vercel.app/";
 
 const StudentPage = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmissionSuccess = () => {
-    console.log('✅ handleSubmissionSuccess called');
+    console.log("✅ handleSubmissionSuccess called");
     setIsSubmitted(true);
     setIsLoading(false);
   };
 
   const handleSubmissionStart = () => {
-    console.log('⏳ handleSubmissionStart called');
+    console.log("⏳ handleSubmissionStart called");
     setIsLoading(true);
     setIsSubmitted(false);
   };
 
   const handleSubmissionError = () => {
-    console.log('❌ handleSubmissionError called');
+    console.log("❌ handleSubmissionError called");
     setIsLoading(false);
     setIsSubmitted(false);
   };
 
   const resetForm = () => {
-    console.log('🔄 resetForm called');
+    console.log("🔄 resetForm called");
     setIsSubmitted(false);
     setIsLoading(false);
   };

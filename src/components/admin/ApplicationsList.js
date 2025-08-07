@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://ggu-btech-form-b.vercel.app/";
 
-
+const API_BASE_URL =
+  process.env.REACT_APP_API_BASE_URL || "http://localhost:5002";
 
 const ApplicationsList = ({ applications }) => {
-   // Add debugging at the top of the component
+  // Add debugging at the top of the component
   console.log("📊 ApplicationsList received applications:", applications);
   console.log("📊 Applications count:", applications?.length || 0);
   console.log("📊 Sample application:", applications?.[0]);
-  
+
   const [selectedApplication, setSelectedApplication] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false); // Add this missing state
@@ -26,86 +26,91 @@ const ApplicationsList = ({ applications }) => {
     setSelectedApplication(application);
   };
 
-  
   // Enhanced Excel download function
-const downloadExcel = async () => {
-  try {
-    setLoading(true);
-    console.log('Starting Excel download...');
-    
-    const token = localStorage.getItem('adminToken');
-    if (!token) {
-      throw new Error('No admin token found. Please login again.');
-    }
+  const downloadExcel = async () => {
+    try {
+      setLoading(true);
+      console.log("Starting Excel download...");
 
-    const response = await fetch(`${API_BASE_URL}/api/admin/applications/download/excel`, {
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-    });
-
-    console.log('Response status:', response.status);
-    console.log('Response headers:', response.headers);
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      console.error('Server response:', errorText);
-      throw new Error(`Download failed: ${response.status} ${response.statusText}`);
-    }
-
-    // Check if response is actually an Excel file
-    const contentType = response.headers.get('content-type');
-    console.log('Content-Type:', contentType);
-    
-    if (!contentType || !contentType.includes('spreadsheetml')) {
-      throw new Error('Server did not return an Excel file');
-    }
-
-    // Get the blob from response
-    const blob = await response.blob();
-    console.log('Blob size:', blob.size, 'bytes');
-    
-    if (blob.size === 0) {
-      throw new Error('Received empty file');
-    }
-    
-    // Create download link
-    const url = window.URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    
-    // Get filename from response headers or use default
-    const contentDisposition = response.headers.get('content-disposition');
-    let filename = `GGU_Student_Applications_${new Date().toISOString().split('T')[0]}.xlsx`;
-    
-    if (contentDisposition) {
-      const filenameMatch = contentDisposition.match(/filename="?([^"]*)"?/);
-      if (filenameMatch) {
-        filename = filenameMatch[1];
+      const token = localStorage.getItem("adminToken");
+      if (!token) {
+        throw new Error("No admin token found. Please login again.");
       }
-    }
-    
-    console.log('Downloading file:', filename);
-    
-    link.download = filename;
-    document.body.appendChild(link);
-    link.click();
-    
-    // Cleanup
-    link.remove();
-    window.URL.revokeObjectURL(url);
-    
-    alert('Excel file downloaded successfully!');
-  } catch (error) {
-    console.error('Download error:', error);
-    alert('Failed to download Excel file: ' + error.message);
-  } finally {
-    setLoading(false);
-  }
-};
 
+      const response = await fetch(
+        `${API_BASE_URL}/api/admin/applications/download/excel`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log("Response status:", response.status);
+      console.log("Response headers:", response.headers);
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error("Server response:", errorText);
+        throw new Error(
+          `Download failed: ${response.status} ${response.statusText}`
+        );
+      }
+
+      // Check if response is actually an Excel file
+      const contentType = response.headers.get("content-type");
+      console.log("Content-Type:", contentType);
+
+      if (!contentType || !contentType.includes("spreadsheetml")) {
+        throw new Error("Server did not return an Excel file");
+      }
+
+      // Get the blob from response
+      const blob = await response.blob();
+      console.log("Blob size:", blob.size, "bytes");
+
+      if (blob.size === 0) {
+        throw new Error("Received empty file");
+      }
+
+      // Create download link
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+
+      // Get filename from response headers or use default
+      const contentDisposition = response.headers.get("content-disposition");
+      let filename = `GGU_Student_Applications_${
+        new Date().toISOString().split("T")[0]
+      }.xlsx`;
+
+      if (contentDisposition) {
+        const filenameMatch = contentDisposition.match(/filename="?([^"]*)"?/);
+        if (filenameMatch) {
+          filename = filenameMatch[1];
+        }
+      }
+
+      console.log("Downloading file:", filename);
+
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+
+      // Cleanup
+      link.remove();
+      window.URL.revokeObjectURL(url);
+
+      alert("Excel file downloaded successfully!");
+    } catch (error) {
+      console.error("Download error:", error);
+      alert("Failed to download Excel file: " + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   if (selectedApplication) {
     return (
@@ -145,68 +150,78 @@ const downloadExcel = async () => {
             <div>
               <h3>Personal Information</h3>
               <p>
-                <strong>Name:</strong> {selectedApplication.student_name || 'N/A'}
+                <strong>Name:</strong>{" "}
+                {selectedApplication.student_name || "N/A"}
               </p>
               <p>
-                <strong>Father's Name:</strong> {selectedApplication.fatherName || 'N/A'}
+                <strong>Father's Name:</strong>{" "}
+                {selectedApplication.fatherName || "N/A"}
               </p>
               <p>
-                <strong>Mother's Name:</strong> {selectedApplication.motherName || 'N/A'}
+                <strong>Mother's Name:</strong>{" "}
+                {selectedApplication.motherName || "N/A"}
               </p>
               <p>
-                <strong>Email:</strong> {selectedApplication.student_email || 'N/A'}
+                <strong>Email:</strong>{" "}
+                {selectedApplication.student_email || "N/A"}
               </p>
               <p>
-                <strong>DOB:</strong> {selectedApplication.dob || 'N/A'}
+                <strong>DOB:</strong> {selectedApplication.dob || "N/A"}
               </p>
               <p>
-                <strong>Gender:</strong> {selectedApplication.gender || 'N/A'}
+                <strong>Gender:</strong> {selectedApplication.gender || "N/A"}
               </p>
               <p>
-                <strong>Nationality:</strong> {selectedApplication.nationality || 'N/A'}
+                <strong>Nationality:</strong>{" "}
+                {selectedApplication.nationality || "N/A"}
               </p>
               <p>
-                <strong>Religion:</strong> {selectedApplication.religion || 'N/A'}
+                <strong>Religion:</strong>{" "}
+                {selectedApplication.religion || "N/A"}
               </p>
               <p>
-                <strong>Category:</strong> {selectedApplication.category || 'N/A'}
+                <strong>Category:</strong>{" "}
+                {selectedApplication.category || "N/A"}
               </p>
               <p>
-                <strong>JEE Mains Application No.:</strong> {selectedApplication.applicationNum || 'N/A'}
+                <strong>JEE Mains Application No.:</strong>{" "}
+                {selectedApplication.applicationNum || "N/A"}
               </p>
               <p>
-                <strong>CRL Rank:</strong> {selectedApplication.crlRank || 'N/A'}
+                <strong>CRL Rank:</strong>{" "}
+                {selectedApplication.crlRank || "N/A"}
               </p>
             </div>
 
             <div>
               <h3>Contact & Other Details</h3>
               <p>
-                <strong>Mobile:</strong> {selectedApplication.mobile || 'N/A'}
+                <strong>Mobile:</strong> {selectedApplication.mobile || "N/A"}
               </p>
               <p>
-                <strong>Alt Mobile:</strong> {selectedApplication.altMobile || 'N/A'}
+                <strong>Alt Mobile:</strong>{" "}
+                {selectedApplication.altMobile || "N/A"}
               </p>
               <p>
-                <strong>Address:</strong> {selectedApplication.address || 'N/A'}
+                <strong>Address:</strong> {selectedApplication.address || "N/A"}
               </p>
               <p>
-                <strong>Amount:</strong> ₹{selectedApplication.amount || 'N/A'}
+                <strong>Amount:</strong> ₹{selectedApplication.amount || "N/A"}
               </p>
               <p>
-                <strong>Bank:</strong> {selectedApplication.bank || 'N/A'}
+                <strong>Bank:</strong> {selectedApplication.bank || "N/A"}
               </p>
               <p>
                 <strong>Fee Payment Date:</strong>{" "}
-                {selectedApplication.date_feepayment || 'N/A'}
+                {selectedApplication.date_feepayment || "N/A"}
               </p>
               <p>
                 <strong>Physically Challenged:</strong>{" "}
-                {selectedApplication.physChallenged || 'N/A'}
+                {selectedApplication.physChallenged || "N/A"}
               </p>
               <p>
                 <strong>Admission Status:</strong>{" "}
-                {selectedApplication.admissionStatus || 'N/A'}
+                {selectedApplication.admissionStatus || "N/A"}
               </p>
               {selectedApplication.branchName && (
                 <p>
@@ -343,48 +358,48 @@ const downloadExcel = async () => {
       {/* Header with search and download button */}
       <div
         style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          marginBottom: '20px',
-          flexWrap: 'wrap',
-          gap: '15px'
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "20px",
+          flexWrap: "wrap",
+          gap: "15px",
         }}
       >
         <h2>Student Applications ({filteredApplications.length})</h2>
-        
-        <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
+
+        <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
           <button
             onClick={downloadExcel}
             disabled={loading}
             style={{
-              padding: '10px 20px',
-              backgroundColor: '#28a745',
-              color: 'white',
-              border: 'none',
-              borderRadius: '6px',
-              cursor: loading ? 'not-allowed' : 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              fontWeight: '500',
-              opacity: loading ? 0.7 : 1
+              padding: "10px 20px",
+              backgroundColor: "#28a745",
+              color: "white",
+              border: "none",
+              borderRadius: "6px",
+              cursor: loading ? "not-allowed" : "pointer",
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              fontWeight: "500",
+              opacity: loading ? 0.7 : 1,
             }}
           >
-            {loading ? '⏳ Generating...' : '📥 Download Excel'}
+            {loading ? "⏳ Generating..." : "📥 Download Excel"}
           </button>
-          
+
           <input
             type="text"
             placeholder="Search by name, email, mobile, JEE number, or rank..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             style={{
-              padding: '10px 15px',
-              width: '350px',
-              border: '2px solid #e2e8f0',
-              borderRadius: '8px',
-              fontSize: '14px'
+              padding: "10px 15px",
+              width: "350px",
+              border: "2px solid #e2e8f0",
+              borderRadius: "8px",
+              fontSize: "14px",
             }}
           />
         </div>
@@ -469,12 +484,24 @@ const downloadExcel = async () => {
           <tbody>
             {filteredApplications.map((application, index) => (
               <tr key={index} style={{ borderBottom: "1px solid #eee" }}>
-                <td style={{ padding: "15px" }}>{application.student_name || 'N/A'}</td>
-                <td style={{ padding: "15px" }}>{application.student_email || 'N/A'}</td>
-                <td style={{ padding: "15px" }}>{application.mobile || 'N/A'}</td>
-                <td style={{ padding: "15px" }}>{application.applicationNum || 'N/A'}</td>
-                <td style={{ padding: "15px" }}>{application.crlRank || 'N/A'}</td>
-                <td style={{ padding: "15px" }}>{application.category || 'N/A'}</td>
+                <td style={{ padding: "15px" }}>
+                  {application.student_name || "N/A"}
+                </td>
+                <td style={{ padding: "15px" }}>
+                  {application.student_email || "N/A"}
+                </td>
+                <td style={{ padding: "15px" }}>
+                  {application.mobile || "N/A"}
+                </td>
+                <td style={{ padding: "15px" }}>
+                  {application.applicationNum || "N/A"}
+                </td>
+                <td style={{ padding: "15px" }}>
+                  {application.crlRank || "N/A"}
+                </td>
+                <td style={{ padding: "15px" }}>
+                  {application.category || "N/A"}
+                </td>
                 <td style={{ padding: "15px", textAlign: "center" }}>
                   <button
                     onClick={() => viewApplication(application)}
@@ -496,11 +523,13 @@ const downloadExcel = async () => {
         </table>
 
         {filteredApplications.length === 0 && (
-          <div style={{
-            padding: '40px',
-            textAlign: 'center',
-            color: '#6c757d'
-          }}>
+          <div
+            style={{
+              padding: "40px",
+              textAlign: "center",
+              color: "#6c757d",
+            }}
+          >
             <p>No applications found matching your search criteria.</p>
           </div>
         )}

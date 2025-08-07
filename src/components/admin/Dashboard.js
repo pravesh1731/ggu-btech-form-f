@@ -1,32 +1,32 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import ApplicationsList from './ApplicationsList';
-import Statistics from './Statistics';
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://ggu-btech-form-b.vercel.app/";
+import React, { useState, useEffect, useCallback } from "react";
+import ApplicationsList from "./ApplicationsList";
+import Statistics from "./Statistics";
 
-
+const API_BASE_URL =
+  process.env.REACT_APP_API_BASE_URL || "http://localhost:5002";
 
 const Dashboard = ({ onLogout }) => {
-  const [activeTab, setActiveTab] = useState('applications');
+  const [activeTab, setActiveTab] = useState("applications");
   const [applications, setApplications] = useState([]);
   const [statistics, setStatistics] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const getAuthHeaders = () => ({
-    'Authorization': `Bearer ${localStorage.getItem('adminToken')}`,
-    'Content-Type': 'application/json'
+    Authorization: `Bearer ${localStorage.getItem("adminToken")}`,
+    "Content-Type": "application/json",
   });
 
   const fetchApplications = useCallback(async () => {
     try {
       const response = await fetch(`${API_BASE_URL}/api/admin/applications`, {
-        headers: getAuthHeaders()
+        headers: getAuthHeaders(),
       });
       const data = await response.json();
       if (response.ok) {
         setApplications(data.applications);
       }
     } catch (error) {
-      console.error('Error fetching applications:', error);
+      console.error("Error fetching applications:", error);
     } finally {
       setLoading(false);
     }
@@ -35,14 +35,14 @@ const Dashboard = ({ onLogout }) => {
   const fetchStatistics = useCallback(async () => {
     try {
       const response = await fetch(`${API_BASE_URL}/api/admin/statistics`, {
-        headers: getAuthHeaders()
+        headers: getAuthHeaders(),
       });
       const data = await response.json();
       if (response.ok) {
         setStatistics(data.statistics);
       }
     } catch (error) {
-      console.error('Error fetching statistics:', error);
+      console.error("Error fetching statistics:", error);
     }
   }, []);
 
@@ -52,26 +52,28 @@ const Dashboard = ({ onLogout }) => {
   }, [fetchApplications, fetchStatistics]);
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: '#f5f5f5' }}>
+    <div style={{ minHeight: "100vh", backgroundColor: "#f5f5f5" }}>
       {/* Header */}
-      <div style={{
-        backgroundColor: '#fff',
-        padding: '15px 30px',
-        borderBottom: '1px solid #ddd',
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center'
-      }}>
-        <h1 style={{ margin: 0, color: '#333' }}>GGU Admin Dashboard</h1>
+      <div
+        style={{
+          backgroundColor: "#fff",
+          padding: "15px 30px",
+          borderBottom: "1px solid #ddd",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
+        <h1 style={{ margin: 0, color: "#333" }}>GGU Admin Dashboard</h1>
         <button
           onClick={onLogout}
           style={{
-            padding: '8px 16px',
-            backgroundColor: '#dc3545',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer'
+            padding: "8px 16px",
+            backgroundColor: "#dc3545",
+            color: "white",
+            border: "none",
+            borderRadius: "4px",
+            cursor: "pointer",
           }}
         >
           Logout
@@ -79,34 +81,40 @@ const Dashboard = ({ onLogout }) => {
       </div>
 
       {/* Navigation Tabs */}
-      <div style={{
-        backgroundColor: '#fff',
-        padding: '0 30px',
-        borderBottom: '1px solid #ddd'
-      }}>
-        <div style={{ display: 'flex' }}>
+      <div
+        style={{
+          backgroundColor: "#fff",
+          padding: "0 30px",
+          borderBottom: "1px solid #ddd",
+        }}
+      >
+        <div style={{ display: "flex" }}>
           <button
-            onClick={() => setActiveTab('applications')}
+            onClick={() => setActiveTab("applications")}
             style={{
-              padding: '15px 25px',
-              border: 'none',
-              backgroundColor: activeTab === 'applications' ? '#007bff' : 'transparent',
-              color: activeTab === 'applications' ? 'white' : '#333',
-              cursor: 'pointer',
-              borderBottom: activeTab === 'applications' ? '2px solid #007bff' : 'none'
+              padding: "15px 25px",
+              border: "none",
+              backgroundColor:
+                activeTab === "applications" ? "#007bff" : "transparent",
+              color: activeTab === "applications" ? "white" : "#333",
+              cursor: "pointer",
+              borderBottom:
+                activeTab === "applications" ? "2px solid #007bff" : "none",
             }}
           >
             Applications ({applications.length})
           </button>
           <button
-            onClick={() => setActiveTab('statistics')}
+            onClick={() => setActiveTab("statistics")}
             style={{
-              padding: '15px 25px',
-              border: 'none',
-              backgroundColor: activeTab === 'statistics' ? '#007bff' : 'transparent',
-              color: activeTab === 'statistics' ? 'white' : '#333',
-              cursor: 'pointer',
-              borderBottom: activeTab === 'statistics' ? '2px solid #007bff' : 'none'
+              padding: "15px 25px",
+              border: "none",
+              backgroundColor:
+                activeTab === "statistics" ? "#007bff" : "transparent",
+              color: activeTab === "statistics" ? "white" : "#333",
+              cursor: "pointer",
+              borderBottom:
+                activeTab === "statistics" ? "2px solid #007bff" : "none",
             }}
           >
             Statistics
@@ -115,15 +123,15 @@ const Dashboard = ({ onLogout }) => {
       </div>
 
       {/* Content */}
-      <div style={{ padding: '30px' }}>
+      <div style={{ padding: "30px" }}>
         {loading ? (
-          <div style={{ textAlign: 'center' }}>Loading...</div>
+          <div style={{ textAlign: "center" }}>Loading...</div>
         ) : (
           <>
-            {activeTab === 'applications' && (
+            {activeTab === "applications" && (
               <ApplicationsList applications={applications} />
             )}
-            {activeTab === 'statistics' && (
+            {activeTab === "statistics" && (
               <Statistics statistics={statistics} />
             )}
           </>

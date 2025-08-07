@@ -1,7 +1,6 @@
 require("dotenv").config();
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://ggu-btech-form-b.vercel.app/";
-
-
+const API_BASE_URL =
+  process.env.REACT_APP_API_BASE_URL || "http://localhost:5002";
 
 export const api = {
   // Student APIs
