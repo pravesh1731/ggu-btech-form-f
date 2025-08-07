@@ -13,13 +13,7 @@ const Dashboard = ({ onLogout }) => {
     'Content-Type': 'application/json'
   });
 
-  useEffect(() => {
-  fetchApplications();
-  fetchStatistics();
-}, [fetchApplications, fetchStatistics]); // ✅ Correct
-
-
-  const fetchApplications = async () => {
+   const fetchApplications = async () => {
     try {
       const response = await fetch('http://localhost:5002/api/admin/applications', {
         headers: getAuthHeaders()
@@ -48,6 +42,13 @@ const Dashboard = ({ onLogout }) => {
       console.error('Error fetching statistics:', error);
     }
   };
+  
+  useEffect(() => {
+    fetchApplications();
+    fetchStatistics();
+  }, [fetchApplications, fetchStatistics]);
+
+ 
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#f5f5f5' }}>
