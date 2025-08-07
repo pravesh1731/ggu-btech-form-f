@@ -357,53 +357,70 @@ const ApplicationsList = ({ applications }) => {
     <div>
       {/* Header with search and download button */}
       <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "20px",
-          flexWrap: "wrap",
-          gap: "15px",
-        }}
-      >
-        <h2>Student Applications ({filteredApplications.length})</h2>
+  style={{
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: "20px",
+    flexWrap: "wrap",
+    rowGap: "15px",
+    columnGap: "20px",
+  }}
+>
+  <h2 style={{ margin: 0, fontSize: "1.25rem", flex: "1 1 auto" }}>
+    Student Applications ({filteredApplications.length})
+  </h2>
 
-        <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-          <button
-            onClick={downloadExcel}
-            disabled={loading}
-            style={{
-              padding: "10px 20px",
-              backgroundColor: "#28a745",
-              color: "white",
-              border: "none",
-              borderRadius: "6px",
-              cursor: loading ? "not-allowed" : "pointer",
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-              fontWeight: "500",
-              opacity: loading ? 0.7 : 1,
-            }}
-          >
-            {loading ? "⏳ Generating..." : "📥 Download Excel"}
-          </button>
+  <div
+    style={{
+      display: "flex",
+      flexWrap: "wrap",
+      gap: "10px",
+      alignItems: "center",
+      justifyContent: "flex-end",
+      flex: "1 1 400px", // Responsive container width
+    }}
+  >
+    <button
+      onClick={downloadExcel}
+      disabled={loading}
+      style={{
+        padding: "10px 20px",
+        backgroundColor: "#28a745",
+        color: "white",
+        border: "none",
+        borderRadius: "6px",
+        cursor: loading ? "not-allowed" : "pointer",
+        display: "flex",
+        alignItems: "center",
+        gap: "8px",
+        fontWeight: "500",
+        opacity: loading ? 0.7 : 1,
+        whiteSpace: "nowrap",
+      }}
+    >
+      {loading ? "⏳ Generating..." : "📥 Download Excel"}
+    </button>
 
-          <input
-            type="text"
-            placeholder="Search by name, email, mobile, JEE number, or rank..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            style={{
-              padding: "10px 20px",
-              width: "300px",
-              border: "2px solid #e2e8f0",
-              borderRadius: "8px",
-              fontSize: "14px",
-            }}
-          />
-        </div>
-      </div>
+    <input
+      type="text"
+      placeholder="Search by name, email, mobile, JEE number, or rank..."
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
+      style={{
+        padding: "10px 20px",
+        minWidth: "200px",
+        width: "100%",
+        maxWidth: "300px",
+        border: "2px solid #e2e8f0",
+        borderRadius: "8px",
+        fontSize: "14px",
+        flex: "1 1 200px", // allow shrinking/growing
+      }}
+    />
+  </div>
+</div>
+
 
       <div
         style={{
