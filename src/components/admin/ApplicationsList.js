@@ -395,8 +395,8 @@ const ApplicationsList = ({ applications }) => {
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             style={{
-              padding: "10px 15px",
-              width: "350px",
+              padding: "10px 20px",
+              width: "300px",
               border: "2px solid #e2e8f0",
               borderRadius: "8px",
               fontSize: "14px",
