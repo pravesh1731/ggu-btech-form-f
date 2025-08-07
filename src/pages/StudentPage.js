@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import AdmissionForm from '../components/student/AdmissionForm';
 import SuccessPage from '../components/student/SuccessPage';
 import LoadingSpinner from '../components/common/LoadingSpinner';
-
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "https://ggu-btech-form-b.vercel.app/";
 
 const StudentPage = () => {
   const [isSubmitted, setIsSubmitted] = useState(false);
