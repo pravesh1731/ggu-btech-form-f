@@ -6,7 +6,12 @@ import FeeInfoSection from "./FeeInfoSection";
 import DocumentUploadSection from "./DocumentUploadSection";
 import DeclarationSection from "./DeclarationSection";
 
-const AdmissionForm = ({ apiBaseUrl, onSubmissionStart, onSubmissionSuccess, onSubmissionError }) => {
+const AdmissionForm = ({
+  apiBaseUrl,
+  onSubmissionStart,
+  onSubmissionSuccess,
+  onSubmissionError,
+}) => {
   const [form, setForm] = useState({
     name: "",
     fatherName: "",
@@ -52,6 +57,9 @@ const AdmissionForm = ({ apiBaseUrl, onSubmissionStart, onSubmissionSuccess, onS
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("🚀 Starting form submission...");
+    console.log("📡 API Base URL:", apiBaseUrl);
+    console.log("🌍 Environment:", process.env.NODE_ENV);
+    console.log("🔗 Full API URL:", `${apiBaseUrl}/api/admission`);
 
     onSubmissionStart();
 
@@ -63,9 +71,13 @@ const AdmissionForm = ({ apiBaseUrl, onSubmissionStart, onSubmissionSuccess, onS
     });
 
     try {
+      console.log("📤 Making request to:", `${apiBaseUrl}/api/admission`);
       const response = await fetch(`${apiBaseUrl}/api/admission`, {
         method: "POST",
         body: formData,
+        headers: {
+          // Don't set Content-Type for FormData, let the browser set it with boundary
+        },
       });
 
       console.log("📊 Response status:", response.status);
