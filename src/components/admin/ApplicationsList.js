@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 
 const ApplicationsList = ({ applications }) => {
+   // Add debugging at the top of the component
+  console.log("📊 ApplicationsList received applications:", applications);
+  console.log("📊 Applications count:", applications?.length || 0);
+  console.log("📊 Sample application:", applications?.[0]);
+  
   const [selectedApplication, setSelectedApplication] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(false); // Add this missing state
